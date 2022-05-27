@@ -127,7 +127,11 @@ router bgp 65003
 !Static route to On-Prem-VNG BGP ip pointing to Tunnel11, so that it would be reachable
 ip route 172.16.1.12 255.255.255.255 Tunnel11
 !Static route for default subnet in branch pointing to CSR default gateway of internal subnet, this is added in order to be able to advertise this route using BGP
-ip route 10.1.2.0 255.255.255.0 10.1.1.1 
+ip route 10.1.2.0 255.255.255.0 10.1.1.1
+
+exit
+exit
+wr
 
 #Create CSR VPN Branch
 az network vpn-site create --ip-address 20.112.94.114 -n csrbranch -g $rg --asn 65003 --bgp-peering-address 192.168.1.1 -l $loc --virtual-wan $vwanname --device-model 'ASR1000v' --device-vendor 'Cisco' --link-speed '150' --with-link true --output none
