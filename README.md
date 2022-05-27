@@ -140,6 +140,11 @@ sh int tunnel11
 sh ip bgp summ
 sh ip route
 
+#Create the route table for branch VM to ping all Spoke VMs and assoicate it
+az network route-table create -g $rg -n rt_branch --output none
+az network route-table route create -g $rg --route-table-name rt_branch -n branchtospoke --next-hop-type VirtualAppliance --address-prefix 172.16.0.0/16 --next-hop-ip-address 10.1.1.4 --output none
+az network vnet subnet update --vnet-name csrbranch --name branch --resource-group $rg --route-table rt_branch --output none
+
 #Create the custom vhub routing 
 az network vhub route-table create -n rt_yellow -g $rg --vhub-name $vhubname --labels rt_yellow --no-wait
 az network vhub route-table create -n rt_blue -g $rg --vhub-name $vhubname --labels rt_blue --no-wait
@@ -162,4 +167,4 @@ az network vpn-gateway connection update --gateway-name $vhubname-vng -n csrbran
 ```
 
 ## Take Aways
-We can see after creating the RT for Blue and Yellow, only those VMs in those custom route tables can ping each other. The branch, which is included in default route table, should be able to ping both Blue and Yellow because we are propogating to both of those route tables. 
+We can see after creating the rt for blue and yellow, only those VMs in those route tables can ping each other. So blue vms can ping blue and yellow vms can ping yellow, but not across. Also, the spoke vms cannot ping the branch vm, since they are only associated to custom route table. For the branch vm, we created a custom route table and pointed to the CSR outside interface to ping all spoke vms across the ipsec tunnel. 
