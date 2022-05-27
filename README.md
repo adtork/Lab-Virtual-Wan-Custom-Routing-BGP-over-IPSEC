@@ -25,3 +25,8 @@ username=azureuser
 password="MyP@SSword123!"
 <br>
 vmsize=Standard_D2_v2
+<br>
+<br>
+#Create the RG
+<br>
+az group create -n $rg -l $loc --output none
