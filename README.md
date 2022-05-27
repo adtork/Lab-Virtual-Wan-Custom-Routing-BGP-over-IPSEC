@@ -112,7 +112,7 @@ interface Tunnel11
  tunnel destination Azure-VNGpubip
  tunnel protection ipsec profile to-Azure-IPsecProfile
 !
-router bgp 65002
+router bgp 65003
  bgp router-id 192.168.1.1
  bgp log-neighbor-changes
  neighbor 10.0.0.4 remote-as 65001
