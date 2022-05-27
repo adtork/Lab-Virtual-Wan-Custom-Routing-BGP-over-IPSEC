@@ -162,4 +162,4 @@ az network vpn-gateway connection update --gateway-name $vhubname-vng -n csr-con
 ```
 
 ## Take Aways
-We can see after creating the RT for Blue and Yellow, only those VMs in those custom route tables can ping each other. The branch, which is included in default route table, should be able to ping both Blue and Yellow because we are propogating to both route tables. 
+We can see after creating the RT for Blue and Yellow, only those VMs in those custom route tables can ping each other. The branch, which is included in default route table, should be able to ping both Blue and Yellow because we are propogating to both of those route tables. 
