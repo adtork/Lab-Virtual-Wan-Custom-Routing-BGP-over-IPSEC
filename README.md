@@ -158,7 +158,7 @@ az network vhub connection update --name spoke2connect --resource-group $rg --as
 az network vhub connection update --name spoke4connect --resource-group $rg --associated-route-table $rt_blue --vhub-name $vhubname --propagated-route-tables $rt_blue $default_hub --labels rt_blue default --no-wait
 
 #Make sure CSR branch reaches all spokes including custom route tables
-az network vpn-gateway connection update --gateway-name $vhubname-vng -n csr-conn -g $rg --propagated $rt_yellow $rt_blue_blue $default_hub --label default rt_yellow rt_blue --output none
+az network vpn-gateway connection update --gateway-name $vhubname-vng -n csrbranch-conn -g $rg --propagated $rt_yellow $rt_blue_blue $default_hub --label default rt_yellow rt_blue --output none
 ```
 
 ## Take Aways
