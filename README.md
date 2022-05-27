@@ -77,16 +77,16 @@ crypto ikev2 proposal Azure-Ikev2-Proposal
  group 2
 !
 crypto ikev2 policy Azure-Ikev2-Policy
- match address local 10.1.0.4 
+ match address local 10.1.1.4 
  proposal Azure-Ikev2-Proposal
 !
 crypto ikev2 keyring to-onprem-keyring
  peer Azure-VNGpubip
   address Azure-VNGpubip
-  pre-shared-key Routeserver
+  pre-shared-key abc123
 !
 crypto ikev2 profile Azure-Ikev2-Profile
- match address local 10.1.0.4 
+ match address local 10.1.1.4 
  match identity remote address 20.252.3.8 255.255.255.255
  authentication remote pre-share
  authentication local pre-share
@@ -107,7 +107,7 @@ interface Loopback11
 interface Tunnel11
  ip address 192.168.2.1 255.255.255.255
  ip tcp adjust-mss 1350
- tunnel source 10.1.0.4
+ tunnel source 10.1.1.4
  tunnel mode ipsec ipv4
  tunnel destination Azure-VNGpubip
  tunnel protection ipsec profile to-Azure-IPsecProfile
@@ -115,19 +115,19 @@ interface Tunnel11
 router bgp 65003
  bgp router-id 192.168.1.1
  bgp log-neighbor-changes
- neighbor 10.0.0.4 remote-as 65001
- neighbor 10.0.0.4 ebgp-multihop 255
- neighbor 10.0.0.4 update-source Loopback11
+ neighbor 172.16.1.12 remote-as 65515
+ neighbor 172.16.1.12 ebgp-multihop 255
+ neighbor 172.16.1.12 update-source Loopback11
  !
  address-family ipv4
-  network 10.1.10.0 mask 255.255.255.0
-  neighbor 10.0.0.4 activate
+  network 10.1.2.0 mask 255.255.255.0
+  neighbor 172.16.1.12 activate
  exit-address-family
 !
 !Static route to On-Prem-VNG BGP ip pointing to Tunnel11, so that it would be reachable
-ip route 10.0.0.4 255.255.255.255 Tunnel11
-!Static route for Subnet-1 pointing to CSR default gateway of internal subnet, this is added in order to be able to advertise this route using BGP
-ip route 10.1.10.0 255.255.255.0 10.1.1.1 
+ip route 172.16.1.12 255.255.255.255 Tunnel11
+!Static route for default subnet in branch pointing to CSR default gateway of internal subnet, this is added in order to be able to advertise this route using BGP
+ip route 10.1.2.0 255.255.255.0 10.1.1.1 
 
 #Create CSR VPN Branch
 az network vpn-site create --ip-address 20.112.94.114 -n csrbranch -g $rg --asn 65003 --bgp-peering-address 192.168.1.1 -l $loc --virtual-wan $vwanname --device-model 'ASR1000v' --device-vendor 'Cisco' --link-speed '150' --with-link true --output none
