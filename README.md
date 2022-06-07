@@ -1,4 +1,4 @@
-# Virtual-Wan Custom Routing with BGP over IPSEC
+# Lab: Virtual-Wan Custom Routing with BGP over IPSEC
 
 
 ## Introduction
