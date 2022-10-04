@@ -45,6 +45,7 @@ az vm image terms accept --urn cisco:cisco-csr-1000v:17_3_4a-byol:latest
 az network public-ip create --name CSRPubIP --resource-group $rg --idle-timeout 30 --allocation-method Static --location $loc --output none
 az network nic create --name CSROutsideInt -g $rg --subnet outside --vnet csrbranch --public-ip-address CSRPubIP --ip-forwarding true --location $loc --output none
 az network nic create --name CSRInsideInt -g $rg --subnet inside --vnet csrbranch --ip-forwarding true --location $loc --output none
+az vm create --resource-group $rg --location $loc --name CSR --size $vmsize --nics CSROutsideInt CSRInsideInt --image cisco:cisco-csr-1000v:17_3_4a-byol:latest --admin-username azureuser --admin-password MyP@SSword123!
 
 #Get CSR PIP, will use late for branch setup
 az network public-ip show -g $rg -n CSRPubIP --query "{address: ipAddress}"
